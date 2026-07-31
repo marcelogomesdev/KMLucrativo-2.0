@@ -1,0 +1,30 @@
+.relatorio-pdf, .relatorio-pdf * { color: #222 !important; }
+.relatorio-pdf {
+    width: 900px;
+    background: #fff;
+    padding: 40px;
+    font-family: "Poppins", sans-serif;
+}
+.relatorio-pdf .pdf-header {
+    display: block !important;
+    width: 100%;
+    background: #2563eb !important;
+    color: white !important;
+    padding: 35px !important;
+    border-radius: 18px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+.relatorio-pdf .pdf-header * { color: #fff !important; }
+.pdf-header h1 { font-size: 34px; margin: 0 0 8px; }
+.pdf-header p { font-size: 18px; margin: 0; opacity: .95; }
+.pdf-logo { display: block; width: 420px; height: 150px; margin: -30px auto -12px; object-fit: cover; object-position: center; }
+.pdf-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; padding: 25px; margin-bottom: 22px; box-shadow: 0 4px 12px rgba(0, 0, 0, .06); }
+.pdf-card h2 { color: #2563eb !important; font-size: 19px; margin-bottom: 18px; border-bottom: 2px solid #eef3ff; padding-bottom: 10px; }
+.pdf-card p { font-size: 15px; padding: 8px 0; border-bottom: 1px dashed #ececec; }
+.pdf-card p:last-child { border-bottom: none; }
+.destaque-pdf { background: #eff6ff; border: 3px solid #2563eb; text-align: center; }
+.destaque-pdf h2 { border: none; margin-bottom: 10px; font-size: 18px; }
+.destaque-pdf #pdfValorKm { font-size: 25px; font-weight: 700; color: #16a34a !important; padding: 6px 0; border: none; }
+.pdf-footer { margin-top: 40px; text-align: center; color: #666 !important; font-size: 14px; }
+.pdf-footer hr { border: none; border-top: 2px solid #e5e7eb; margin-bottom: 18px; }

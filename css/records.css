@@ -1,0 +1,83 @@
+.navegacao-abas {
+    width: min(1200px, 92%);
+    margin: 28px auto 0;
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+.aba-botao {
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    padding: 12px 20px;
+    background: var(--card);
+    color: var(--texto);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    transition: .3s;
+    flex: 1 0 auto;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.aba-botao:hover,
+.aba-botao.ativo {
+    background: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+    color: #fff;
+    transform: translateY(-2px);
+}
+.aba-botao:focus-visible { position: relative; z-index: 1; }
+
+.aba-conteudo:not(.ativo) { display: none; }
+
+.campo select,
+.campo textarea {
+    padding: 12px;
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--texto);
+    font: inherit;
+    outline: none;
+    transition: .3s;
+}
+
+.campo select:focus,
+.campo textarea:focus {
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, .15);
+}
+
+.campo textarea { resize: vertical; min-height: 104px; }
+.campo-observacoes { grid-column: 1 / -1; }
+
+.btn-perigo { background: var(--vermelho); color: #fff; }
+.btn-perigo:hover { filter: brightness(.9); transform: translateY(-3px); }
+.btn:disabled { cursor: not-allowed; opacity: .5; transform: none; }
+
+.mensagem-registro {
+    min-height: 24px;
+    margin-top: 18px;
+    text-align: center;
+    color: var(--verde);
+    font-weight: 600;
+}
+
+.tabela-responsiva { overflow-x: auto; }
+.tabela-registros { width: 100%; border-collapse: collapse; min-width: 920px; }
+.tabela-registros th,
+.tabela-registros td { padding: 14px 12px; border-bottom: 1px solid var(--borda); text-align: left; }
+.tabela-registros th { color: var(--texto-sec); font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
+.tabela-registros tbody tr { cursor: pointer; transition: .2s; }
+.tabela-registros tbody tr:hover { background: var(--bg); transform: translateY(-1px); }
+.tabela-registros tbody tr.selecionado { background: rgba(37, 99, 235, .12); }
+.tabela-registros .resultado-positivo { color: var(--verde); font-weight: 700; }
+.tabela-registros .resultado-negativo { color: var(--vermelho); font-weight: 700; }
+.observacao-tabela { max-width: 240px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.estado-vazio { color: var(--texto-sec); text-align: center; padding: 26px 0 4px; }

@@ -1,0 +1,24 @@
+@media (max-width: 900px) {
+    header { padding: 20px; flex-direction: column; gap: 18px; text-align: center; }
+    .logo { width: min(360px, 90vw); }
+    .header-acoes { width: 100%; justify-content: center; flex-wrap: wrap; }
+    .cards { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+    main { width: 95%; }
+    .grid, .cards { grid-template-columns: 1fr; }
+    .acoes { flex-direction: column; }
+    .btn { width: 100%; justify-content: center; }
+    .logo { height: 72px; }
+    .card p { font-size: 24px; }
+    .navegacao-abas { width: 95%; padding-bottom: 8px; }
+    .aba-botao { width: auto; min-width: max-content; }
+    .btn-header span { display: none; }
+    .btn-header { width: 44px; height: 44px; padding: 0; justify-content: center; }
+    .dashboard-controles { align-items: stretch; flex-direction: column; }
+    .dashboard-controles .btn { width: 100%; justify-content: center; }
+    .rodape-profissional { align-items: flex-start; flex-direction: column; }
+    .rodape-marca { align-items: flex-start; flex-direction: column; }
+    .rodape-info { justify-content: flex-start; text-align: left; }
+}

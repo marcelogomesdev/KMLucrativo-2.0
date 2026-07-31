@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>KM Lucrativo | Dashboard Financeiro para Motoristas de Aplicativo</title>
+    <meta name="description" content="Dashboard financeiro para motoristas de aplicativo controlarem receitas, despesas, quilômetros, horas trabalhadas e lucratividade.">
+    <meta name="author" content="Marcelo Gomes Dev">
+    <meta name="theme-color" id="themeColor" content="#f4f7fb">
+    <meta name="color-scheme" content="light dark">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="KM Lucrativo">
+    <meta property="og:description" content="Dashboard Financeiro para Motoristas de Aplicativo">
+    <meta property="og:image" content="images/banner.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="KM Lucrativo">
+    <meta name="twitter:description" content="Dashboard Financeiro para Motoristas de Aplicativo">
+    <meta name="twitter:image" content="images/banner.png">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pdf.css">
+    <link rel="stylesheet" href="css/records.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/intelligence.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <a class="logo" href="#" aria-label="KM Lucrativo — página inicial">
+        <img id="logoCabecalho" class="logo-identidade logo-identidade-horizontal"
+             src="images/logoclaro.png"
+             data-src-light="images/logoclaro.png"
+             data-src-dark="images/logoescuro.png"
+             alt="KM Lucrativo — Dashboard Financeiro para Motoristas de Aplicativo">
+    </a>
+
+    <div class="header-acoes">
+        <button id="btnSalvarBackup" class="btn-header" type="button">
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span>Salvar Backup</span>
+        </button>
+        <button id="btnImportarBackup" class="btn-header" type="button">
+            <i class="fa-solid fa-folder-open"></i>
+            <span>Importar Backup</span>
+        </button>
+        <input id="arquivoBackup" type="file" accept="application/json,.json" hidden>
+        <button id="modoEscuro" class="btn-dark" type="button" aria-label="Alternar modo escuro" title="Alternar modo escuro">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+    </div>
+
+</header>
+
+<nav class="navegacao-abas" aria-label="Navegação principal" role="tablist">
+    <button id="tabDashboard" class="aba-botao ativo" type="button" role="tab" data-aba="abaDashboard" aria-controls="abaDashboard" aria-selected="true">
+        <span aria-hidden="true">🏠</span>
+        Visão Geral
+    </button>
+    <button id="tabCalculadora" class="aba-botao" type="button" role="tab" data-aba="abaCalculadora" aria-controls="abaCalculadora" aria-selected="false" tabindex="-1">
+        <span aria-hidden="true">💰</span>
+        Custo por KM
+    </button>
+    <button id="tabRegistro" class="aba-botao" type="button" role="tab" data-aba="abaRegistro" aria-controls="abaRegistro" aria-selected="false" tabindex="-1">
+        <span aria-hidden="true">📝</span>
+        Registro Diário
+    </button>
+    <button id="tabRelatorios" class="aba-botao" type="button" role="tab" data-aba="abaRelatorios" aria-controls="abaRelatorios" aria-selected="false" tabindex="-1">
+        <span aria-hidden="true">📊</span>
+        Relatórios
+    </button>
+    <button id="tabConfiguracoes" class="aba-botao" type="button" role="tab" data-aba="abaConfiguracoes" aria-controls="abaConfiguracoes" aria-selected="false" tabindex="-1">
+        <span aria-hidden="true">⚙️</span>
+        Configurações
+    </button>
+</nav>
+
+<main>
+
+<div id="abaDashboard" class="aba-conteudo ativo" role="tabpanel" aria-labelledby="tabDashboard">
+
+<section class="dashboard-cabecalho">
+    <div>
+        <p class="dashboard-subtitulo">Visão geral do desempenho</p>
+        <h2>Visão Geral</h2>
+    </div>
+    <div class="dashboard-controles">
+        <p id="dashboardPeriodo" class="dashboard-periodo"></p>
+        <button id="btnAbrirFiltros" class="btn btn-secundario" type="button" aria-controls="painelFiltros" aria-expanded="false">
+            <i class="fa-solid fa-sliders"></i>
+            Filtros
+        </button>
+    </div>
+</section>
+
+<div id="filtrosOverlay" class="filtros-overlay" hidden></div>
+<aside id="painelFiltros" class="filtros-dashboard" aria-labelledby="tituloFiltros" aria-hidden="true">
+    <div class="filtros-cabecalho">
+        <h2 id="tituloFiltros"><i class="fa-solid fa-sliders"></i> Filtros</h2>
+        <button id="btnFecharFiltros" class="btn-fechar" type="button" aria-label="Fechar filtros"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="filtros-periodo" role="group" aria-label="Filtro por período">
+        <button class="filtro-periodo ativo" type="button" data-periodo="hoje">Hoje</button>
+        <button class="filtro-periodo" type="button" data-periodo="ontem">Ontem</button>
+        <button class="filtro-periodo" type="button" data-periodo="semana">Semana</button>
+        <button class="filtro-periodo" type="button" data-periodo="mes">Mês</button>
+        <button class="filtro-periodo" type="button" data-periodo="ano">Ano</button>
+        <button class="filtro-periodo" type="button" data-periodo="personalizado">Período Personalizado</button>
+    </div>
+    <div class="filtros-secundarios">
+        <div id="camposPeriodoPersonalizado" class="periodo-personalizado" hidden>
+            <div class="campo">
+                <label for="filtroDataInicio">Data inicial</label>
+                <input type="date" id="filtroDataInicio">
+            </div>
+            <div class="campo">
+                <label for="filtroDataFim">Data final</label>
+                <input type="date" id="filtroDataFim">
+            </div>
+        </div>
+        <div class="campo filtro-aplicativo">
+            <label for="filtroAplicativo">Aplicativo</label>
+            <select id="filtroAplicativo">
+                <option value="todos">Todos os aplicativos</option>
+                <option value="Uber">Uber</option>
+                <option value="99">99</option>
+                <option value="InDrive">InDrive</option>
+            </select>
+        </div>
+    </div>
+    <div class="filtros-acoes">
+        <button id="btnLimparFiltros" class="btn btn-secundario" type="button">Limpar</button>
+        <button id="btnAplicarFiltros" class="btn btn-principal" type="button">Aplicar</button>
+    </div>
+</aside>
+
+<section class="metricas-dashboard" aria-label="Indicadores do período">
+    <article class="metrica-card principal"><span>Receita Bruta</span><strong id="dashReceita">R$ 0,00</strong><i class="fa-solid fa-arrow-trend-up"></i></article>
+    <article class="metrica-card sucesso"><span>Lucro Líquido</span><strong id="dashLucro">R$ 0,00</strong><i class="fa-solid fa-sack-dollar"></i></article>
+    <article class="metrica-card perigo"><span>Despesas</span><strong id="dashDespesas">R$ 0,00</strong><i class="fa-solid fa-receipt"></i></article>
+    <article class="metrica-card"><span>KM Rodados</span><strong id="dashKm">0 km</strong><i class="fa-solid fa-road"></i></article>
+    <article class="metrica-card"><span>Horas Trabalhadas</span><strong id="dashHoras">0 h</strong><i class="fa-solid fa-clock"></i></article>
+    <article class="metrica-card"><span>Receita por Hora</span><strong id="dashReceitaHora">R$ 0,00</strong><i class="fa-solid fa-business-time"></i></article>
+    <article class="metrica-card"><span>Lucro por Hora</span><strong id="dashLucroHora">R$ 0,00</strong><i class="fa-solid fa-hourglass-half"></i></article>
+    <article class="metrica-card"><span>Receita por KM</span><strong id="dashReceitaKm">R$ 0,00</strong><i class="fa-solid fa-route"></i></article>
+    <article class="metrica-card"><span>Lucro por KM</span><strong id="dashLucroKm">R$ 0,00</strong><i class="fa-solid fa-location-dot"></i></article>
+    <article class="metrica-card"><span>Consumo Médio</span><strong id="dashConsumo">0 km/L</strong><i class="fa-solid fa-gas-pump"></i></article>
+    <article class="metrica-card"><span>Margem de Lucro</span><strong id="dashMargem">0%</strong><i class="fa-solid fa-percent"></i></article>
+</section>
+
+<section class="metas-dashboard" aria-label="Progresso das metas">
+    <article class="meta-progresso-card">
+        <div><span>Meta Semanal</span><strong id="progressoMetaSemanalTexto">Não configurada</strong></div>
+        <div class="meta-barra"><span id="progressoMetaSemanal"></span></div>
+        <small id="progressoMetaSemanalFalta">Configure em Configurações</small>
+    </article>
+    <article class="meta-progresso-card">
+        <div><span>Meta Mensal</span><strong id="progressoMetaMensalTexto">Não configurada</strong></div>
+        <div class="meta-barra"><span id="progressoMetaMensal"></span></div>
+        <small id="progressoMetaMensalFalta">Configure em Configurações</small>
+    </article>
+    <article class="meta-progresso-card">
+        <div><span>Meta Anual</span><strong id="progressoMetaAnualTexto">Não configurada</strong></div>
+        <div class="meta-barra"><span id="progressoMetaAnual"></span></div>
+        <small id="progressoMetaAnualFalta">Configure em Configurações</small>
+    </article>
+</section>
+
+<p id="dashboardSemDados" class="dashboard-sem-dados">Nenhum registro encontrado para os filtros selecionados.</p>
+
+<section class="graficos-dashboard">
+    <article class="grafico-card grafico-largo"><h3>Receita por dia</h3><div class="grafico-area"><canvas id="graficoReceitaDia"></canvas></div></article>
+    <article class="grafico-card grafico-largo"><h3>Lucro por dia</h3><div class="grafico-area"><canvas id="graficoLucroDia"></canvas></div></article>
+    <article class="grafico-card"><h3>Receita por aplicativo</h3><div class="grafico-area"><canvas id="graficoReceitaApp"></canvas></div></article>
+    <article class="grafico-card"><h3>Distribuição das despesas</h3><div class="grafico-area"><canvas id="graficoDespesas"></canvas></div></article>
+    <article class="grafico-card"><h3>KM rodados</h3><div class="grafico-area"><canvas id="graficoKm"></canvas></div></article>
+    <article class="grafico-card"><h3>Horas trabalhadas</h3><div class="grafico-area"><canvas id="graficoHoras"></canvas></div></article>
+    <article class="grafico-card grafico-largo"><h3>Consumo do veículo</h3><div class="grafico-area"><canvas id="graficoConsumo"></canvas></div></article>
+</section>
+
+<section class="analise-inteligente container">
+    <div class="analise-cabecalho">
+        <div>
+            <p class="dashboard-subtitulo">Insights gerados pelo histórico completo</p>
+            <h2><i class="fa-solid fa-brain"></i> Análise Inteligente</h2>
+        </div>
+        <span id="analiseQuantidade" class="analise-badge">0 registros</span>
+    </div>
+
+    <div id="analiseCards" class="analise-cards">
+        <article class="analise-card positivo"><i class="fa-solid fa-trophy"></i><span>Melhor dia</span><strong id="analiseMelhorDia">—</strong><small id="analiseMelhorDiaDetalhe">Sem dados</small></article>
+        <article class="analise-card negativo"><i class="fa-solid fa-arrow-trend-down"></i><span>Pior dia</span><strong id="analisePiorDia">—</strong><small id="analisePiorDiaDetalhe">Sem dados</small></article>
+        <article class="analise-card positivo"><i class="fa-solid fa-mobile-screen"></i><span>Aplicativo mais lucrativo</span><strong id="analiseMelhorApp">—</strong><small id="analiseMelhorAppDetalhe">Sem dados</small></article>
+        <article class="analise-card atencao"><i class="fa-solid fa-mobile-retro"></i><span>Aplicativo menos lucrativo</span><strong id="analisePiorApp">—</strong><small id="analisePiorAppDetalhe">Sem dados</small></article>
+        <article class="analise-card"><i class="fa-solid fa-coins"></i><span>Lucro médio</span><strong id="analiseLucroMedio">R$ 0,00</strong><small>por dia trabalhado</small></article>
+        <article class="analise-card"><i class="fa-solid fa-wallet"></i><span>Receita média</span><strong id="analiseReceitaMedia">R$ 0,00</strong><small>por dia trabalhado</small></article>
+        <article class="analise-card"><i class="fa-solid fa-clock"></i><span>Horas médias</span><strong id="analiseHorasMedia">0 h</strong><small>por dia trabalhado</small></article>
+        <article class="analise-card"><i class="fa-solid fa-gas-pump"></i><span>Consumo médio</span><strong id="analiseConsumoMedio">0 km/L</strong><small>histórico consolidado</small></article>
+        <article class="analise-card positivo"><i class="fa-solid fa-bolt"></i><span>Dia mais produtivo</span><strong id="analiseMaisProdutivo">—</strong><small id="analiseMaisProdutivoDetalhe">Sem dados</small></article>
+        <article class="analise-card atencao"><i class="fa-solid fa-battery-quarter"></i><span>Dia menos produtivo</span><strong id="analiseMenosProdutivo">—</strong><small id="analiseMenosProdutivoDetalhe">Sem dados</small></article>
+    </div>
+
+    <div class="comparacoes-grid">
+        <article class="comparacao-card">
+            <h3><i class="fa-solid fa-calendar-days"></i> Comparação entre períodos</h3>
+            <p id="comparacaoPeriodos">Cadastre registros em períodos diferentes para comparar.</p>
+        </article>
+        <article class="comparacao-card">
+            <h3><i class="fa-solid fa-code-compare"></i> Comparação entre aplicativos</h3>
+            <div id="comparacaoAplicativos" class="comparacao-apps"><p>Cadastre registros para comparar os aplicativos.</p></div>
+        </article>
+    </div>
+
+    <div class="recomendacoes-box">
+        <h3><i class="fa-solid fa-lightbulb"></i> Recomendações automáticas</h3>
+        <div id="recomendacoesLista" class="recomendacoes-lista"></div>
+    </div>
+</section>
+
+</div>
+
+<div id="abaCalculadora" class="aba-conteudo" role="tabpanel" aria-labelledby="tabCalculadora" hidden>
+
+<section class="container">
+
+<h2>
+
+    <i class="fa-solid fa-wallet"></i>
+
+    Custos Mensais
+
+</h2>
+
+<div class="grid">
+
+<div class="campo">
+
+<label for="parcela">Parcela / Aluguel (Mensal)</label>
+
+<input
+type="number"
+id="parcela"
+placeholder="0,00">
+
+</div>
+
+<div class="campo">
+
+<label for="seguro">Seguro (Mensal)</label>
+
+<input
+type="number"
+id="seguro"
+placeholder="0,00">
+
+</div>
+
+<div class="campo">
+
+<label for="ipva">IPVA (Anual)</label>
+
+<input
+type="number"
+id="ipva"
+placeholder="0,00">
+
+<small class="dica">
+O sistema divide automaticamente por 12.
+</small>
+
+</div>
+
+<div class="campo">
+
+<label for="internet">Internet (Mensal)</label>
+
+<input
+type="number"
+id="internet"
+placeholder="0,00">
+
+</div>
+
+<div class="campo">
+
+<label for="alimentacao">Alimentação (Por Dia)</label>
+
+<input
+type="number"
+id="alimentacao"
+placeholder="0,00">
+
+<small class="dica">
+Ex.: quanto você gasta em um dia de trabalho.
+</small>
+
+</div>
+
+<div class="campo">
+
+<label for="lavagem">Lavagem (Mensal)</label>
+
+<input
+type="number"
+id="lavagem"
+placeholder="0,00">
+
+</div>
+
+<div class="campo">
+
+<label for="extras">Despesas Adicionais (Mensal)</label>
+
+<input
+type="number"
+id="extras"
+placeholder="0,00">
+
+</div>
+
+<div class="campo">
+
+<label for="lucro">Lucro Mensal Desejado</label>
+
+<input
+type="number"
+id="lucro"
+placeholder="3000">
+
+<small class="dica">
+Quanto você deseja ganhar líquido por mês.
+</small>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="container">
+
+<h2>
+
+<i class="fa-solid fa-gas-pump"></i>
+
+Custos por Quilômetro
+
+</h2>
+
+<div class="grid">
+
+<div class="campo">
+
+<label for="valorCombustivel">Preço do Combustível</label>
+
+<input
+type="number"
+id="valorCombustivel"
+step="0.01"
+placeholder="6.39">
+
+</div>
+
+<div class="campo">
+
+<label for="consumo">Consumo (Km/L)</label>
+
+<input
+type="number"
+id="consumo"
+step="0.1"
+placeholder="12">
+
+</div>
+
+<div class="campo">
+
+<label for="valorOleo">Troca de Óleo / Revisão</label>
+
+<input
+type="number"
+id="valorOleo"
+placeholder="350">
+
+</div>
+
+<div class="campo">
+
+<label for="trocaOleoKm">Troca a cada (Km)</label>
+
+<input
+type="number"
+id="trocaOleoKm"
+placeholder="10000">
+
+</div>
+<div class="campo">
+
+<label for="valorPneus">Valor dos Pneus</label>
+
+<input
+type="number"
+id="valorPneus"
+placeholder="2400">
+
+</div>
+
+<div class="campo">
+
+<label for="vidaPneus">Durabilidade dos Pneus (Km)</label>
+
+<input
+type="number"
+id="vidaPneus"
+placeholder="50000">
+
+</div>
+
+<div class="campo">
+
+<label for="valorPastilhas">Valor das Pastilhas</label>
+
+<input
+type="number"
+id="valorPastilhas"
+placeholder="300">
+
+</div>
+
+<div class="campo">
+
+<label for="vidaPastilhas">Troca das Pastilhas (Km)</label>
+
+<input
+type="number"
+id="vidaPastilhas"
+placeholder="30000">
+
+</div>
+
+</div>
+
+</section>
+
+<section class="container">
+
+<h2>
+
+<i class="fa-solid fa-road"></i>
+
+Rotina de Trabalho
+
+</h2>
+
+<div class="grid">
+
+<div class="campo">
+
+<label for="diasMes">Dias Trabalhados por Mês</label>
+
+<input
+type="number"
+id="diasMes"
+placeholder="26">
+
+</div>
+
+<div class="campo">
+
+<label for="kmDia">Km Rodados por Dia</label>
+
+<input
+type="number"
+id="kmDia"
+placeholder="200">
+
+</div>
+
+</div>
+
+</section>
+
+<section class="acoes">
+
+<button
+id="btnCalcular"
+class="btn btn-principal">
+
+<i class="fa-solid fa-calculator"></i>
+
+Calcular Custos
+
+</button>
+
+</section>
+
+<section
+id="painelFinanceiro"
+class="painel oculto">
+
+<h2>
+
+<i class="fa-solid fa-chart-line"></i>
+
+Painel Financeiro
+
+</h2>
+
+<div class="cards">
+
+<div class="card">
+
+<h3>Custo Mensal</h3>
+
+<p id="custoMensal">
+
+R$ 0,00
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>Custo por Km</h3>
+
+<p id="custoReal">
+
+R$ 0,00
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>Combustível por Km</h3>
+
+<p id="combustivelKm">
+
+R$ 0,00
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>Meta Diária</h3>
+
+<p id="metaDiaria">
+
+R$ 0,00
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>Meta Semanal</h3>
+
+<p id="metaSemanal">
+
+R$ 0,00
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>Meta Mensal</h3>
+
+<p id="metaMensal">
+
+R$ 0,00
+
+</p>
+
+</div>
+
+<div class="card destaque">
+
+<h3>Valor Mínimo por Km</h3>
+
+<p id="valorKm">
+
+R$ 0,00
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+<section
+id="diagnostico"
+class="container oculto">
+
+<h2>
+
+<i class="fa-solid fa-stethoscope"></i>
+
+Diagnóstico Inteligente
+
+</h2>
+
+<div class="diagnostico-box">
+
+<p id="mensagemDiagnostico">
+
+Preencha os dados e clique em calcular.
+
+</p>
+
+</div>
+
+</section>
+
+<section class="container">
+
+<h2>
+
+<i class="fa-solid fa-car-side"></i>
+
+Simulador de Corrida
+
+</h2>
+
+<div class="grid">
+
+<div class="campo">
+
+<label for="valorCorrida">Valor da Corrida (R$)</label>
+
+<input
+type="number"
+id="valorCorrida"
+step="0.01"
+placeholder="25.00">
+
+</div>
+
+<div class="campo">
+
+<label for="kmCorrida">Quilômetros da Corrida</label>
+
+<input
+type="number"
+id="kmCorrida"
+step="0.1"
+placeholder="12">
+
+</div>
+
+</div>
+
+<div class="acoes">
+
+<button
+id="btnSimular"
+class="btn btn-principal">
+
+<i class="fa-solid fa-car-side"></i>
+
+Simular Corrida
+
+</button>
+
+</div>
+
+<div
+id="resultadoCorrida"
+class="cards oculto">
+
+<div class="card">
+
+<h3>Custo da Corrida</h3>
+
+<p id="custoCorrida">
+
+R$ 0,00
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>Lucro Líquido</h3>
+
+<p id="lucroCorrida">
+
+R$ 0,00
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>Lucro por Km</h3>
+
+<p id="lucroKm">
+
+R$ 0,00
+
+</p>
+
+</div>
+
+<div class="card destaque">
+
+<h3>Resultado</h3>
+
+<p id="statusCorrida">
+
+Aguardando...
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+<div id="abaRegistro" class="aba-conteudo" role="tabpanel" aria-labelledby="tabRegistro" hidden>
+
+<section class="container">
+
+<h2>
+    <i class="fa-solid fa-calendar-check"></i>
+    Registro Diário
+</h2>
+
+<form id="formRegistro" novalidate>
+
+<div class="grid">
+
+<div class="campo">
+    <label for="registroData">Data</label>
+    <input type="date" id="registroData" required>
+</div>
+
+<div class="campo">
+    <label for="registroAplicativo">Aplicativo</label>
+    <select id="registroAplicativo" required>
+        <option value="Uber">Uber</option>
+        <option value="99">99</option>
+        <option value="InDrive">InDrive</option>
+    </select>
+</div>
+
+<div class="campo">
+    <label for="registroHoras">Horas trabalhadas</label>
+    <input type="number" id="registroHoras" min="0" step="0.1" placeholder="0,0" required>
+</div>
+
+<div class="campo">
+    <label for="registroKm">KM rodados</label>
+    <input type="number" id="registroKm" min="0" step="0.1" placeholder="0,0" required>
+</div>
+
+<div class="campo">
+    <label for="registroReceita">Receita Bruta</label>
+    <input type="number" id="registroReceita" min="0" step="0.01" placeholder="0,00" required>
+</div>
+
+<div class="campo">
+    <label for="registroLitros">Litros abastecidos</label>
+    <input type="number" id="registroLitros" min="0" step="0.01" placeholder="0,00">
+</div>
+
+<div class="campo">
+    <label for="registroCombustivel">Valor do combustível</label>
+    <input type="number" id="registroCombustivel" min="0" step="0.01" placeholder="0,00">
+</div>
+
+<div class="campo">
+    <label for="registroAlimentacao">Alimentação</label>
+    <input type="number" id="registroAlimentacao" min="0" step="0.01" placeholder="0,00">
+</div>
+
+<div class="campo">
+    <label for="registroPedagio">Pedágio</label>
+    <input type="number" id="registroPedagio" min="0" step="0.01" placeholder="0,00">
+</div>
+
+<div class="campo">
+    <label for="registroEstacionamento">Estacionamento</label>
+    <input type="number" id="registroEstacionamento" min="0" step="0.01" placeholder="0,00">
+</div>
+
+<div class="campo">
+    <label for="registroOutras">Outras despesas</label>
+    <input type="number" id="registroOutras" min="0" step="0.01" placeholder="0,00">
+</div>
+
+<div class="campo campo-observacoes">
+    <label for="registroObservacoes">Observações</label>
+    <textarea id="registroObservacoes" rows="4" maxlength="500" placeholder="Informações adicionais sobre o dia"></textarea>
+</div>
+
+</div>
+
+<div class="acoes">
+    <button id="btnSalvarRegistro" class="btn btn-principal" type="submit">
+        <i class="fa-solid fa-floppy-disk"></i>
+        Salvar
+    </button>
+    <button id="btnEditarRegistro" class="btn btn-secundario" type="button" disabled>
+        <i class="fa-solid fa-pen"></i>
+        Editar
+    </button>
+    <button id="btnExcluirRegistro" class="btn btn-perigo" type="button" disabled>
+        <i class="fa-solid fa-trash"></i>
+        Excluir
+    </button>
+</div>
+
+<p id="mensagemRegistro" class="mensagem-registro" role="status" aria-live="polite"></p>
+
+</form>
+
+</section>
+
+<section class="container">
+
+<h2>
+    <i class="fa-solid fa-table-list"></i>
+    Registros Salvos
+</h2>
+
+<div class="tabela-responsiva">
+    <table class="tabela-registros">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Aplicativo</th>
+                <th>Horas</th>
+                <th>KM</th>
+                <th>Receita</th>
+                <th>Despesas</th>
+                <th>Resultado</th>
+                <th>Observações</th>
+            </tr>
+        </thead>
+        <tbody id="corpoTabelaRegistros"></tbody>
+    </table>
+</div>
+
+<p id="semRegistros" class="estado-vazio">Nenhum registro cadastrado.</p>
+
+</section>
+
+</div>
+
+<div id="abaRelatorios" class="aba-conteudo" role="tabpanel" aria-labelledby="tabRelatorios" hidden>
+    <section class="pagina-cabecalho">
+        <p class="dashboard-subtitulo">Resumo financeiro para compartilhamento</p>
+        <h2><i class="fa-solid fa-chart-column"></i> Relatórios</h2>
+    </section>
+    <section class="container pagina-centralizada">
+        <i class="fa-solid fa-file-pdf pagina-icone"></i>
+        <h2>Relatório Financeiro</h2>
+        <p>Exporte os custos, metas e o valor mínimo por quilômetro calculados.</p>
+        <button id="btnPDF" class="btn btn-principal" type="button">
+            <i class="fa-solid fa-file-pdf"></i>
+            Exportar PDF
+        </button>
+    </section>
+</div>
+
+<div id="abaConfiguracoes" class="aba-conteudo" role="tabpanel" aria-labelledby="tabConfiguracoes" hidden>
+    <section class="pagina-cabecalho">
+        <p class="dashboard-subtitulo">Preferências da interface</p>
+        <h2><i class="fa-solid fa-gear"></i> Configurações</h2>
+    </section>
+    <section class="container configuracao-card">
+        <div>
+            <h2><i class="fa-solid fa-circle-half-stroke"></i> Aparência</h2>
+            <p>Alterne entre o modo claro e o modo escuro. Sua preferência permanece salva neste navegador.</p>
+        </div>
+        <button id="btnTemaConfiguracoes" class="btn btn-secundario" type="button">
+            <i class="fa-solid fa-moon"></i>
+            <span>Ativar modo escuro</span>
+        </button>
+    </section>
+    <section class="container">
+        <h2><i class="fa-solid fa-bullseye"></i> Metas Financeiras</h2>
+        <form id="formConfiguracoes">
+            <div class="grid">
+                <div class="campo"><label for="configMetaSemanal">Meta semanal</label><input id="configMetaSemanal" type="number" min="0" step="0.01" placeholder="0,00"></div>
+                <div class="campo"><label for="configMetaMensal">Meta mensal</label><input id="configMetaMensal" type="number" min="0" step="0.01" placeholder="0,00"></div>
+                <div class="campo"><label for="configMetaAnual">Meta anual</label><input id="configMetaAnual" type="number" min="0" step="0.01" placeholder="0,00"></div>
+                <div class="campo"><label for="configValorMinimoKm">Valor mínimo por KM</label><input id="configValorMinimoKm" type="number" min="0" step="0.01" placeholder="0,00"></div>
+            </div>
+            <div class="acoes"><button id="btnSalvarConfiguracoes" class="btn btn-principal" type="submit"><i class="fa-solid fa-floppy-disk"></i> Salvar Configurações</button></div>
+            <p id="mensagemConfiguracoes" class="mensagem-registro" role="status" aria-live="polite"></p>
+        </form>
+    </section>
+</div>
+
+</main>
+
+
+<div id="relatorioPDF" class="relatorio-pdf" style="position:absolute; left:-10000px; top:-10000px;">
+
+<div class="pdf-header">
+    <img class="pdf-logo" src="images/logoclaro.png" alt="KM Lucrativo">
+    <p>Relatório Financeiro</p>
+</div>
+
+<div class="pdf-card destaque-pdf">
+
+    <h2>Valor Mínimo por Km</h2>
+
+    <p id="pdfValorKm"></p>
+
+</div>
+
+<div class="pdf-card">
+
+    <h2>Painel Financeiro</h2>
+
+    <p id="pdfCustoMensal"></p>
+
+    <p id="pdfCustoKm"></p>
+
+    <p id="pdfCombustivel"></p>
+
+</div>
+
+<div class="pdf-card">
+
+    <h2>Metas</h2>
+
+    <p id="pdfMetaDiaria"></p>
+
+    <p id="pdfMetaSemanal"></p>
+
+    <p id="pdfMetaMensal"></p>
+
+</div>
+
+<div class="pdf-footer">
+
+    <hr>
+
+    <p><strong>KM Lucrativo v2.1.0</strong></p>
+
+    <p id="pdfData"></p>
+
+    <p>Transformando quilômetros em lucro.</p>
+
+</div>  
+
+</div>
+
+<footer class="rodape-profissional">
+    <div class="rodape-marca">
+        <img id="logoRodape" class="logo-identidade logo-identidade-principal"
+             src="images/logoclaro.png"
+             data-src-light="images/logoclaro.png"
+             data-src-dark="images/logoescuro.png"
+             alt="KM Lucrativo">
+        <div><strong>KM Lucrativo</strong><span>Dashboard Financeiro para Motoristas de Aplicativo</span></div>
+    </div>
+    <div class="rodape-info">
+        <span>✨ Versão 2.1.0</span>
+        <span>👤 Desenvolvido por Marcelo Gomes Dev</span>
+        <div class="rodape-links">
+            <a href="https://github.com/marcelogomesdev" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github"></i> GitHub</a>
+            <a href="https://www.linkedin.com/in/marcelogomesdev/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+        </div>
+        <span>© 2026 KM Lucrativo</span>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
+
+<script src="script.js" defer></script>
+
+</body>
+
+</html>
