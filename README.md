@@ -1,4 +1,4 @@
-![Banner do KM Lucrativo](images/banner.png)
+
 
 <p align="center">
   <a href="https://marcelogomesdev.github.io/KMLucrativo-2.0/" target="_blank">
