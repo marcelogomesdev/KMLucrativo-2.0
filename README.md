@@ -1,10 +1,10 @@
 ![Banner do KM Lucrativo](images/banner.png)
 
-<div align="center">
-
-### 🌐 [Acessar Carteira Inteligente](https://marcelogomesdev.github.io/Carteira-Inteligente/)
-
-</div>
+<p align="center">
+  <a href="https://marcelogomesdev.github.io/KMLucrativo-2.0/" target="_blank">
+    🚀 Acessar o KM Lucrativo 2.0
+  </a>
+</p>
 
 # KM Lucrativo
 
