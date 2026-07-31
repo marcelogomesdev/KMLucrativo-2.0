@@ -1,5 +1,11 @@
 ![Banner do KM Lucrativo](images/banner.png)
 
+<div align="center">
+
+### 🌐 [Acessar Carteira Inteligente](https://marcelogomesdev.github.io/Carteira-Inteligente/)
+
+</div>
+
 # KM Lucrativo
 
 Dashboard financeiro para motoristas de aplicativo acompanharem receitas, despesas, quilômetros rodados, horas trabalhadas, consumo, metas e lucratividade. A aplicação funciona diretamente no navegador, mantém os dados localmente e não exige backend.
