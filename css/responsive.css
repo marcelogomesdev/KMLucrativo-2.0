@@ -1,16 +1,19 @@
 @media (max-width: 900px) {
-    header { padding: 20px; flex-direction: column; gap: 18px; text-align: center; }
-    .logo { width: min(360px, 90vw); }
+    header { padding: 8px 16px; flex-direction: column; gap: 8px; text-align: center; }
+    .logo { --altura-logo: 64px; width: min(220px, 90vw); height: 64px; }
+    .rodape-marca { --altura-logo: 84px; min-height: 84px; }
+    .rodape-marca .logo-rodape-area { width: min(290px, 76vw); height: 84px; flex-basis: min(290px, 76vw); }
     .header-acoes { width: 100%; justify-content: center; flex-wrap: wrap; }
     .cards { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 600px) {
+    header { padding: 6px 12px; gap: 6px; }
     main { width: 95%; }
     .grid, .cards { grid-template-columns: 1fr; }
     .acoes { flex-direction: column; }
     .btn { width: 100%; justify-content: center; }
-    .logo { height: 72px; }
+    .logo { --altura-logo: 56px; width: min(190px, 88vw); height: 56px; }
     .card p { font-size: 24px; }
     .navegacao-abas { width: 95%; padding-bottom: 8px; }
     .aba-botao { width: auto; min-width: max-content; }
@@ -18,7 +21,10 @@
     .btn-header { width: 44px; height: 44px; padding: 0; justify-content: center; }
     .dashboard-controles { align-items: stretch; flex-direction: column; }
     .dashboard-controles .btn { width: 100%; justify-content: center; }
-    .rodape-profissional { align-items: flex-start; flex-direction: column; }
-    .rodape-marca { align-items: flex-start; flex-direction: column; }
-    .rodape-info { justify-content: flex-start; text-align: left; }
+    .rodape-profissional { padding: 14px 12px 18px; gap: 8px; }
+    .rodape-marca { --altura-logo: 72px; width: 100%; min-height: 72px; }
+    .rodape-marca .logo-rodape-area { width: min(250px, 86vw); height: 72px; flex-basis: min(250px, 86vw); }
+    .rodape-info { width: 100%; gap: 12px; }
+    .rodape-detalhes { flex-direction: column; gap: 6px; }
+    .rodape-links { gap: 18px; }
 }
